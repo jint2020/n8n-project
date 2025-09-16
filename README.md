@@ -7,6 +7,7 @@
 - `docker-compose.yml` - 基础版本，使用 SQLite 数据库
 - `docker-compose.postgres.yml` - 完整版本，使用 PostgreSQL 数据库（推荐生产环境使用）
 - `.env.example` - 环境变量配置模板
+- `CONFIGURATION_GUIDE.md` - 详细配置指南
 
 ## 快速开始
 
@@ -26,33 +27,44 @@ docker-compose down
 ### 方式二：使用 PostgreSQL（推荐生产环境）
 
 ```bash
-# 启动服务
+# 1. 配置环境变量
+cp .env.example .env
+# 编辑 .env 文件，修改密码和密钥
+
+# 2. 启动服务
 docker-compose -f docker-compose.postgres.yml up -d
 
-# 查看日志
+# 3. 查看日志
 docker-compose -f docker-compose.postgres.yml logs -f n8n
 
 # 停止服务
 docker-compose -f docker-compose.postgres.yml down
 ```
 
-## 配置说明
+> ⚠️ **重要**：使用 PostgreSQL 版本前，请务必阅读 `CONFIGURATION_GUIDE.md` 并修改默认密码和加密密钥！
 
-### 环境变量
+## ⭐ 新功能：环境变量配置
 
-复制 `.env.example` 为 `.env` 并根据需要修改配置：
+现在所有配置都支持通过 `.env` 文件进行自定义！主要特性：
+
+- ✅ **完全基于环境变量**：所有硬编码值已移除
+- ✅ **安全默认值**：提供合理的默认配置
+- ✅ **灵活端口配置**：支持自定义端口映射
+- ✅ **完整的安全配置**：包含加密和认证设置
+
+### 配置步骤
 
 ```bash
+# 1. 复制配置模板
 cp .env.example .env
+
+# 2. 修改重要配置（必须）
+# 编辑 .env 文件，修改：
+# - POSTGRES_PASSWORD（数据库密码）
+# - N8N_ENCRYPTION_KEY（加密密钥）
+# - N8N_BASIC_AUTH_USER（管理员用户名）
+# - N8N_BASIC_AUTH_PASSWORD（管理员密码）
 ```
-
-主要配置项：
-
-- `GENERIC_TIMEZONE` 和 `TZ`: 时区设置，默认为 Asia/Shanghai
-- `N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS`: 强制设置文件权限
-- `N8N_RUNNERS_ENABLED`: 启用 runners 功能
-- `N8N_BASIC_AUTH_*`: 基本认证配置
-- `N8N_ENCRYPTION_KEY`: 数据加密密钥（重要！请更改默认值）
 
 ### 访问地址
 
