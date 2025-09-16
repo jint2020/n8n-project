@@ -1,0 +1,301 @@
+{
+  "name": "rss",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1360,
+        688
+      ],
+      "id": "4f5abccc-901b-4a72-aa8a-b65b16fa966c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://crazy.capital/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        320
+      ],
+      "id": "50bda634-0d9e-4092-adba-6f7f6d1d93fe",
+      "name": "疯投RSS"
+    },
+    {
+      "parameters": {
+        "url": "https://plink.anyfeeder.com/newscn/whxw",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        128
+      ],
+      "id": "7186fa77-664f-46fe-a4be-178a88e83171",
+      "name": "新华社新闻RSS"
+    },
+    {
+      "parameters": {
+        "url": "https://rss.huxiu.com/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        512
+      ],
+      "id": "ebb3d288-8ba9-4902-aaa8-a45aac87e245",
+      "name": "虎嗅RSS"
+    },
+    {
+      "parameters": {
+        "url": "https://36kr.com/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        1088
+      ],
+      "id": "e7abb4a7-91ef-4d33-a606-f28f740794eb",
+      "name": "36krRSS"
+    },
+    {
+      "parameters": {
+        "url": "https://www.geekpark.net/rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        704
+      ],
+      "id": "a75748d1-2b6c-4dee-ae08-e6964a5636ff",
+      "name": "极客公园RSS"
+    },
+    {
+      "parameters": {
+        "url": "https://www.ifanr.com/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        896
+      ],
+      "id": "bbbfd7ca-ea48-43e9-89e7-94bbeca61b33",
+      "name": "爱范儿RSS"
+    },
+    {
+      "parameters": {
+        "url": "https://china232.libsyn.com/rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -608,
+        1280
+      ],
+      "id": "23e82643-0107-4dd8-b4ea-ebef276cba56",
+      "name": "RSS Read1"
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "numberInputs": 7,
+        "query": "WITH combined_data AS (\n    SELECT creator, title, link, pubDate, author, content, contentSnippet, guid, categories, isoDate FROM input1\n    UNION ALL\n    SELECT creator, title, link, pubDate, author, content, contentSnippet, guid, categories, isoDate FROM input2\n    UNION ALL\n    SELECT creator, title, link, pubDate, author, content, contentSnippet, guid, categories, isoDate FROM input3\n    UNION ALL\n    SELECT creator, title, link, pubDate, author, content, contentSnippet, guid, categories, isoDate FROM input4\n    UNION ALL\n    SELECT creator, title, link, pubDate, author, content, contentSnippet, guid, categories, isoDate FROM input5\n    UNION ALL\n    SELECT creator, title, link, pubDate, author, content, contentSnippet, guid, categories, isoDate FROM input6\n    UNION ALL\n    SELECT creator, title, link, pubDate, author, content, contentSnippet, guid, categories, isoDate FROM input7\n)\nSELECT * FROM combined_data;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        128,
+        624
+      ],
+      "id": "55ea0b51-0b28-4621-9e1c-003ec61649e8",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "fromEmail": "jintang23@foxmail.com",
+        "toEmail": "jintang23@outlook.com",
+        "subject": "今日rss新闻",
+        "emailFormat": "both",
+        "text": "=",
+        "html": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        336
+      ],
+      "id": "451e7d9b-8570-449c-8cd3-1849886e99a7",
+      "name": "Send email",
+      "webhookId": "d042dcd6-9301-440b-8da6-856e67c8593f",
+      "credentials": {
+        "smtp": {
+          "id": "opnM0UhstvSUVCB1",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "新华社新闻RSS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "疯投RSS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "虎嗅RSS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "36krRSS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "极客公园RSS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "爱范儿RSS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "疯投RSS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "新华社新闻RSS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "虎嗅RSS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "极客公园RSS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "爱范儿RSS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "36krRSS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "RSS Read1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "370fdf82-9040-4359-a343-3b51b447f98b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c4bef29fc77e115d4580ac30508175980a2cb93134c8724cb2cf76cb4f7b36f"
+  },
+  "id": "Ca3SyDsNo4lyy2dD",
+  "tags": []
+}
